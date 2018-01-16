@@ -18,7 +18,7 @@ def unknown(bot, update):
 
 def price(bot, update):
     update.message.reply_text(
-        '{}'.format('bitcoin')[0]['price_usd']))
+        '{}'.format(request('bitcoin')[0]['price_usd']))
         
 # Other Function
 def request(coin):
