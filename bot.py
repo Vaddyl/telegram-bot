@@ -28,7 +28,7 @@ def price(bot, update):
             bot.send_message(chat_id=update.message.chat_id, text="Sorry, I can't find the coin you looking for")
         else:
             update.message.reply_text(
-            '{}\nBTC :{}\nUSD :{}\n% Change 1h :{}\n% Change 24h :'.format(r_json[0]['name'], r_json[0]['price_btc'], r_json[0]['price_usd']
+            '{}\nBTC :{}\nUSD :{}\n% Change 1h :{}\n% Change 24h :{}'.format(r_json[0]['name'], r_json[0]['price_btc'], r_json[0]['price_usd']
                                                           ,r_json[0]['percent_change_1h'], r_json[0]['percent_change_24h']))
             
 def priv_note(bot, update):
