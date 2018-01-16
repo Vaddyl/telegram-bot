@@ -27,6 +27,7 @@ def price(bot, update):
         if r_json == 'error':
             bot.send_message(chat_id=update.message.chat_id, text="Sorry, I can't find the coin you looking for")
         else:
+            update.message.reply_text(
             '{}\nBTC {}\nUSD {}'.format(coin, r_json[0]['price_btc'], r_json[0]['price_usd']))
             
 def priv_note(bot, update):
