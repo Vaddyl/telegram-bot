@@ -4,10 +4,11 @@ import os
 import requests
 
 token = os.environ['TELEGRAM_TOKEN']
+notes = os.environ['PRIVATE_NOTES']
 
 # Commands Callback Function
 def start(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="Avaiable command:\n/hello\n/price")
+    bot.send_message(chat_id=update.message.chat_id, text="Avaiable command:\n/hello\n/price\n/note")
 
 def hello(bot, update):
     update.message.reply_text(
@@ -19,6 +20,10 @@ def unknown(bot, update):
 def price(bot, update):
     update.message.reply_text(
         '{}'.format(request('bitcoin')[0]['price_usd']))
+    
+def priv_note(bot, update):
+    update.message.reply_text(
+        '{}'.format(notes))
         
 # Other Function
 def request(coin):
@@ -36,6 +41,7 @@ updater = Updater(token)
 updater.dispatcher.add_handler(CommandHandler('start', start))
 updater.dispatcher.add_handler(CommandHandler('hello', hello))
 updater.dispatcher.add_handler(CommandHandler('price', price))
+updater.dispatcher.add_handler(CommandHandler('note', priv_note))
 updater.dispatcher.add_handler(MessageHandler(Filters.command, unknown))
 
 updater.start_polling()
