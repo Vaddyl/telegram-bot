@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import os
+import requests
 
 token = os.environ['TELEGRAM_TOKEN']
+
+def request(coin):
+    url = 'https://api.coinmarketcap.com/v1/ticker/' + coin
+    r = requests.get(url)
+    return r
 
 def start(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="Avaiable command:\n/hello\n/price [coin]")
@@ -14,6 +20,8 @@ def hello(bot, update):
 def uknown(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="Please use the available command, use /start command to see any available command")
     
+# def coin()
+
 updater = Updater(token)
 dispatcher = updater.dispatcher
 
