@@ -16,7 +16,6 @@ def uknown(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="Please use the available command, use /start command to see any available command")
     
 def request(coin):
-    def req():
     url = 'https://api.coinmarketcap.com/v1/ticker/' + coi 
     r = requests.get(url)
     while True:
