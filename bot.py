@@ -4,12 +4,19 @@ import os
 
 token = os.environ['TELEGRAM_TOKEN']
 
+def lehan(bot, update):
+    bot.send_message(chat_id=update.message.chat_id, text="Belajar leee!!!")
+
 def hello(bot, update):
     update.message.reply_text(
         'Hello {}'.format(update.message.from_user.first_name))
+    
 
 updater = Updater(token)
-updater.dispatcher.add_handler(CommandHandler('hello', hello))
+dispatcher = updater.dispatcher
+
+dispatcher.add_handler(CommandHandler('lehan', lehan))
+dispatcher.add_handler(CommandHandler('hello', hello))
 
 updater.start_polling()
 updater.idle()
