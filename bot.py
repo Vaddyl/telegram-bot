@@ -6,9 +6,15 @@ import requests
 token = os.environ['TELEGRAM_TOKEN']
 
 def request(coin):
-    url = 'https://api.coinmarketcap.com/v1/ticker/' + coin
+    def req():
+    url = 'https://api.coinmarketcap.com/v1/ticker/arrrrr'
     r = requests.get(url)
-    return r
+    while True:
+        try:
+            r.json()['error']
+            return 'error'
+        except TypeError:
+            return r.json()
 
 def start(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="Avaiable command:\n/hello\n/price [coin]")
