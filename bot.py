@@ -5,17 +5,6 @@ import requests
 
 token = os.environ['TELEGRAM_TOKEN']
 
-def request(coin):
-    def req():
-    url = 'https://api.coinmarketcap.com/v1/ticker/arrrrr'
-    r = requests.get(url)
-    while True:
-        try:
-            r.json()['error']
-            return 'error'
-        except TypeError:
-            return r.json()
-
 def start(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="Avaiable command:\n/hello\n/price [coin]")
 
@@ -26,7 +15,16 @@ def hello(bot, update):
 def uknown(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="Please use the available command, use /start command to see any available command")
     
-# def coin()
+def request(coin):
+    def req():
+    url = 'https://api.coinmarketcap.com/v1/ticker/' + coi 
+    r = requests.get(url)
+    while True:
+        try:
+            r.json()['error']
+            return 'error'
+        except TypeError:
+            return r.json()
 
 updater = Updater(token)
 dispatcher = updater.dispatcher
