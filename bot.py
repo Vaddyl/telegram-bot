@@ -8,19 +8,27 @@ notes = os.environ['PRIVATE_NOTES']
 
 # Commands Callback Function
 def start(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="Avaiable command:\n/hello\n/price\n/note")
+    bot.send_message(chat_id=update.message.chat_id, text="Avaiable command:\n/hello\n/price coin_name\n/note")
 
 def hello(bot, update):
     update.message.reply_text(
         'Hello {}'.format(update.message.from_user.first_name))
     
 def unknown(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="Please use the available command, use /start command to see any available command")
+    bot.send_message(chat_id=update.message.chat_id, text="Please use the available commands, use /start to see any available commands")
 
 def price(bot, update):
-    update.message.reply_text(
-        '{}'.format(request('bitcoin')[0]['price_usd']))
-    
+    coin = update.message.text[7:]
+    if coin == '':
+        update.message.reply_text(
+            '{}'.format(request('bitcoin')[0]['price_usd']))
+    else:
+        r_json = request(coin)
+        if r_json == 'error':
+            bot.send_message(chat_id=update.message.chat_id, text="Sorry, I can't find the coin you looking for")
+        else:
+            '{}\nBTC {}\nUSD {}'.format(coin, r_json[0]['price_btc'], r_json[0]['price_usd']))
+            
 def priv_note(bot, update):
     update.message.reply_text(
         '{}'.format(notes))
