@@ -2,7 +2,6 @@
 from telegram.ext import Updater, CommandHandler
 import os
 
-#           Config vars
 token = os.environ['TELEGRAM_TOKEN']
 
 def hello(bot, update):
