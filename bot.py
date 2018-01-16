@@ -17,8 +17,8 @@ def unknown(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="Please use the available command, use /start command to see any available command")
 
 def price(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="Enter the coin:")
-    coin = update.message.from_user
+    update.message.reply_text(
+        '{}'.format('bitcoin')[0]['price_usd']))
         
 # Other Function
 def request(coin):
