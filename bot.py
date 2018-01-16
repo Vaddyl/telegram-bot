@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from telegram.ext import Updater, CommandHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import os
 
 token = os.environ['TELEGRAM_TOKEN']
@@ -19,7 +19,7 @@ dispatcher = updater.dispatcher
 
 dispatcher.add_handler(CommandHandler('start', start))
 dispatcher.add_handler(CommandHandler('hello', hello))
-dispatcher.add_handler(CommandHandler(Filters.command, uknown))
+dispatcher.add_handler(MessageHandler(Filters.command, uknown))
 
 updater.start_polling()
 updater.idle()
