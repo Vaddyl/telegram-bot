@@ -5,7 +5,7 @@ import os
 token = os.environ['TELEGRAM_TOKEN']
 
 def start(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="Avaiable command:\n/hello/n/price [coin]")
+    bot.send_message(chat_id=update.message.chat_id, text="Avaiable command:\n/hello\n/price [coin]")
 
 def hello(bot, update):
     update.message.reply_text(
