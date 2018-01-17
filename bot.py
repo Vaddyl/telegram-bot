@@ -20,7 +20,7 @@ def unknown(bot, update):
 def price(bot, update):
     coin = str.lower(update.message.text[3:])
     if coin == '':
-        bot.send_message(chat_id=update.message.chat_id, text="Please specifiy the coin name (e.g /price ethereum)")
+        bot.send_message(chat_id=update.message.chat_id, text="Please specifiy the coin name (e.g /p ethereum, /p xlm)")
     else:
         r_json = request(coin)
         if r_json == 'error': # Error, try to check coin with symbol (Limited, only with top 100 coins)
