@@ -4,11 +4,11 @@ import os
 import requests
 
 token = os.environ['TELEGRAM_TOKEN']
-notes = os.environ['PRIVATE_NOTES']
+notes = str(os.environ['PRIVATE_NOTES'])
 
 # Commands Callback Function
 def start(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="Avaiable command:\n/hello\n/price coin_name\n/note")
+    bot.send_message(chat_id=update.message.chat_id, text="Avaiable command:\n/hello\n/p coin_name\n/note")
 
 def hello(bot, update):
     update.message.reply_text(
@@ -18,7 +18,7 @@ def unknown(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="Please use the available commands, use /start to see any available commands")
 
 def price(bot, update):
-    coin = update.message.text[7:]
+    coin = update.message.text[3:]
     if coin == '':
         update.message.reply_text(
             '{}'.format(request('bitcoin')[0]['price_usd']))
@@ -28,7 +28,7 @@ def price(bot, update):
             bot.send_message(chat_id=update.message.chat_id, text="Sorry, I can't find the coin you looking for")
         else:
             update.message.reply_text(
-            '{}\nBTC :{}\nUSD :{}\n% Change 1h :{}\n% Change 24h :{}'.format(r_json[0]['name'], r_json[0]['price_btc'], r_json[0]['price_usd']
+            '{}\nBTC : {}\nUSD : {}\n% Change 1h : {}\n% Change 24h : {}'.format(r_json[0]['name'], r_json[0]['price_btc'], r_json[0]['price_usd']
                                                           ,r_json[0]['percent_change_1h'], r_json[0]['percent_change_24h']))
             
 def priv_note(bot, update):
@@ -51,7 +51,7 @@ updater = Updater(token)
 # Command
 updater.dispatcher.add_handler(CommandHandler('start', start))
 updater.dispatcher.add_handler(CommandHandler('hello', hello))
-updater.dispatcher.add_handler(CommandHandler('price', price))
+updater.dispatcher.add_handler(CommandHandler('p', price))
 updater.dispatcher.add_handler(CommandHandler('note', priv_note))
 updater.dispatcher.add_handler(MessageHandler(Filters.command, unknown))
 
