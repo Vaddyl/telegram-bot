@@ -8,7 +8,7 @@ notes = str(os.environ['PRIVATE_NOTES'])
 
 # Commands Callback Function
 def start(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="Avaiable command:\n/hello\n/p coin_name\n/note")
+    bot.send_message(chat_id=update.message.chat_id, text="Avaiable command:\n/hello\n/p coin_name\/cal amount coin_name\n/note")
 
 def hello(bot, update):
     update.message.reply_text(
@@ -29,30 +29,40 @@ def price(bot, update):
                 bot.send_message(chat_id=update.message.chat_id, text="Sorry, I can't find the coin you looking for")
             else:
                 update.message.reply_text(
-                '{}\nBTC : {}\nUSD : {}\n% Change 1h : {}\n% Change 24h : {}'.format(name, btc, usd, oneH, twentyFourH))
+                '{}\nɃ {}\n$ {}\n% Change 1h : {}\n% Change 24h : {}'.format(name, btc, usd, oneH, twentyFourH))
         else:
             update.message.reply_text(
-            '{}\nBTC : {}\nUSD : {}\n% Change 1h : {}\n% Change 24h : {}'.format(r_json[0]['name'], r_json[0]['price_btc'], r_json[0]['price_usd']
+            '{}\nɃ {}\n$ {}\n% Change 1h : {}\n% Change 24h : {}'.format(r_json[0]['name'], r_json[0]['price_btc'], r_json[0]['price_usd']
                                                           ,r_json[0]['percent_change_1h'], r_json[0]['percent_change_24h']))
             
-# def calculate(bot, update):
-#    total_coin = str.lower(update.message.text[:5])
-#    coin = ''
-#    total = ''
-#    for i in range(len(total_coin)):
-#        if isdigit(total_coin[i]) or total_coin[i] == '.':
-#            total += total_coin[i]
-#        else:
-#            total = float(total)
-#            coin = total_coin[i:]
-#            break
-    
-
-def priv_note(bot, update): # My private note
-    update.message.reply_text(
-        '{}'.format(notes))
+def calculate(bot, update):
+    total_coin = str.lower(update.message.text[5:])
+    total_coin = total_coin.split()
+    coin = ''
+    if len(total_coin) != 2:
+        bot.send_message(chat_id=update.message.chat_id, text="Please use the right format (e.g /cal 10 eth, /cal 0.22 monero)")
+        return
+    while True:
+        try:
+            total = float(total_coin[0])
+            coin = total_coin[1]
+            break
+        except ValueError:
+            bot.send_message(chat_id=update.message.chat_id, text="Please use the right format (e.g /cal 10 eth, /cal 0.22 monero)")
+            return
+    r_json = request(coin)
+    if r_json == 'error': # Error, try to check coin with symbol (Limited, only with top 100 coins)
+        name, btc, usd, oneH, twentyFourH = find(str.upper(coin))
+        if name == 'error':
+            bot.send_message(chat_id=update.message.chat_id, text="Sorry, I can't find the coin you looking for")
+        else:
+            update.message.reply_text(
+                'Ƀ {}\n$ {}'.format(total*float(btc), total*float(usd)))
+    else:
+        update.message.reply_text(
+            'Ƀ {}\n$ {}'.format(total*float(r_json[0]['price_btc']), total*float(r_json[0]['price_usd'])))
         
-# Other Function
+# Other Functions
 def request(coin):
     url = 'https://api.coinmarketcap.com/v1/ticker/' + coin
     r = requests.get(url)
@@ -72,10 +82,10 @@ def find(coin):
         
 updater = Updater(token)
 
-# Command
 updater.dispatcher.add_handler(CommandHandler('start', start))
 updater.dispatcher.add_handler(CommandHandler('hello', hello))
-updater.dispatcher.add_handler(CommandHandler('p', price))
+updater.dispatcher.add_handler(CommandHandler('p', price)) # /p eth
+updater.dispatcher.add_handler(CommandHandler('cal', calculate)) # /cal 10 eth
 updater.dispatcher.add_handler(CommandHandler('note', priv_note))
 updater.dispatcher.add_handler(MessageHandler(Filters.command, unknown))
 
