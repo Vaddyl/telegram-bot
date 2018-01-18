@@ -61,6 +61,9 @@ def calculate(bot, update):
     else:
         update.message.reply_text(
             'Ƀ {}\n$ {}'.format(total*float(r_json[0]['price_btc']), total*float(r_json[0]['price_usd'])))
+      
+def priv_note(bot, update): # Private note
+    update.message.reply_text('{}'.format(notes))
         
 # Other Functions
 def request(coin):
@@ -89,5 +92,6 @@ updater.dispatcher.add_handler(CommandHandler('cal', calculate)) # /cal 10 eth
 updater.dispatcher.add_handler(CommandHandler('note', priv_note))
 updater.dispatcher.add_handler(MessageHandler(Filters.command, unknown))
 
+start(bot, update)
 updater.start_polling()
 updater.idle()
