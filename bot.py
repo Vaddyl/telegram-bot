@@ -35,7 +35,20 @@ def price(bot, update):
             '{}\nBTC : {}\nUSD : {}\n% Change 1h : {}\n% Change 24h : {}'.format(r_json[0]['name'], r_json[0]['price_btc'], r_json[0]['price_usd']
                                                           ,r_json[0]['percent_change_1h'], r_json[0]['percent_change_24h']))
             
-def priv_note(bot, update):
+# def calculate(bot, update):
+#    total_coin = str.lower(update.message.text[:5])
+#    coin = ''
+#    total = ''
+#    for i in range(len(total_coin)):
+#        if isdigit(total_coin[i]) or total_coin[i] == '.':
+#            total += total_coin[i]
+#        else:
+#            total = float(total)
+#            coin = total_coin[i:]
+#            break
+    
+
+def priv_note(bot, update): # My private note
     update.message.reply_text(
         '{}'.format(notes))
         
