@@ -92,6 +92,5 @@ updater.dispatcher.add_handler(CommandHandler('cal', calculate)) # /cal 10 eth
 updater.dispatcher.add_handler(CommandHandler('note', priv_note))
 updater.dispatcher.add_handler(MessageHandler(Filters.command, unknown))
 
-start(bot, update)
 updater.start_polling()
 updater.idle()
