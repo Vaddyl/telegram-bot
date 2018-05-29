@@ -64,8 +64,16 @@ def calculate(bot, update):
             'Ƀ {}\n$ {}'.format(total*float(r_json[0]['price_btc']), total*float(r_json[0]['price_usd'])))
 
 def spend(bot, update):
-    total_spend = int(update.message.text[3:])
-    r = requests.post(URL_HOST, data={'spend': total_spend})
+    total_spend = 0
+    while True:
+        try:
+            total_spend = int(update.message.text[3:])
+            break
+        except ValueError:
+            bot.send_message(chat_id=update.message.chat_id, text="Please use the right format (e.g /s 2000)")
+            return
+        
+    r = requests.post(host, data={'spend': total_spend})
     if r.status_code == 200:
         bot.send_message(chat_id=update.message.chat_id, text="Berhasil!")
     else:
