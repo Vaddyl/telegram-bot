@@ -5,10 +5,11 @@ import requests
 
 token = os.environ['TELEGRAM_TOKEN']
 notes = str(os.environ['PRIVATE_NOTES'])
+host = os.environ['URL_HOST']
 
 # Commands Callback Function
 def start(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="Avaiable command:\n/hello\n/p coin_name\/cal amount coin_name\n/note")
+    bot.send_message(chat_id=update.message.chat_id, text="Avaiable command:\n/hello\n/p coin_name\n/cal amount coin_name\n/note\n/s moneyspend")
 
 def hello(bot, update):
     update.message.reply_text(
@@ -61,7 +62,15 @@ def calculate(bot, update):
     else:
         update.message.reply_text(
             'Ƀ {}\n$ {}'.format(total*float(r_json[0]['price_btc']), total*float(r_json[0]['price_usd'])))
-      
+
+def spend(bot, update):
+    total_spend = int(update.message.text[3:])
+    r = requests.post(URL_HOST, data={'spend': total_spend})
+    if r.status_code == 200:
+        bot.send_message(chat_id=update.message.chat_id, text="Berhasil!")
+    else:
+        bot.send_message(chat_id=update.message.chat_id, text="Gagal!")
+    
 def priv_note(bot, update): # Private note
     update.message.reply_text('{}'.format(notes))
         
@@ -90,7 +99,11 @@ updater.dispatcher.add_handler(CommandHandler('hello', hello))
 updater.dispatcher.add_handler(CommandHandler('p', price)) # /p eth
 updater.dispatcher.add_handler(CommandHandler('cal', calculate)) # /cal 10 eth
 updater.dispatcher.add_handler(CommandHandler('note', priv_note))
+updater.dispatcher.add_handler(CommandHandler('s', spend))
 updater.dispatcher.add_handler(MessageHandler(Filters.command, unknown))
 
 updater.start_polling()
 updater.idle()
+
+# ex post requests query
+# requests.post("http://localhost/duidQ/bot.php", data={'duid': 1000})
